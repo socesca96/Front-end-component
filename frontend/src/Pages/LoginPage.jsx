@@ -16,27 +16,51 @@ const LoginPage = () => {
     const dispatch = useDispatch();
 
     const doLogin = async () => {
-        const userInfo = await doLoginFetch(email, password);
-        console.log("userInfo", userInfo);
-        dispatch(doLoginAction(userInfo));
-        dispatch(goToPageAction("user-detail"));
+            const userInfo = await doLoginFetch(email, password);
+            console.log("userInfo", userInfo);
+        
+            //Eliminar contraseña del objeto user
+            delete userInfo.user?.password;
+        
+            // Guardar en localStorage
+            localStorage.setItem("token", userInfo.token);
+            localStorage.setItem("user", JSON.stringify(userInfo.user));
+        
+            dispatch(doLoginAction({
+                user: userInfo,
+                token: userInfo.token,
+              }));
+            dispatch(goToPageAction("user-detail"));
     };
     const doRegister = async () => {
         const data = new FormData();
         for (const key in registerInfo) {
             data.append(key, registerInfo[key]);
         }
+    
+        if (profileImage) {
+            data.append('profileImage', profileImage); 
+        }
+    
         try {
-            const userInfo = await registerUser(data)
+            const userInfo = await registerUser(data);
             console.log("userInfo", userInfo);
-            dispatch(doLoginAction(userInfo));
-            dispatch(goToPageAction("user-detail"))
-            if (profileImage) {
-                data.append('profileImage', profileImage);
-              }
-            //Reiniciar el formulario 
-            setRegisterInfo({})
-            setProfileImage(null)
+    
+            delete userInfo.user?.password;
+    
+            //Guardar en localStorage
+            localStorage.setItem("token", userInfo.token);
+            localStorage.setItem("user", JSON.stringify(userInfo.user));
+    
+            dispatch(doLoginAction({
+                user: userInfo.user,
+                token: userInfo.token,
+              }));
+            dispatch(goToPageAction("user-detail"));
+    
+            // Limpiar formulario
+            setRegisterInfo({});
+            setProfileImage(null);
         } catch (error) {
             console.error("Error al registrar el usuario:", error);
         }

@@ -1,5 +1,5 @@
-import React from 'react'
-import { useSelector } from "react-redux";
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from "react-redux";
 import HomePages from "./HomePages"
 import LoginPage from "./LoginPage"
 import HeaderComponent from '../Components/layout/HeaderComponent';
@@ -9,12 +9,27 @@ import UserDetail from '../Components/user/UserDetail';
 import FooterComponent from '../Components/layout/FooterComponent';
 import CartComponent from '../Components/cart/CartComponent';
 import ContactComponent from '../Components/contact/ContactComponent';
+import { doLoginAction } from '../Components/login/LoginAction';
+import CreateProduct from '../Components/product/CreateProduct';
 
 const MainPage = () => {
+  const dispatch = useDispatch()  
+  const currentPage = useSelector((state) => state.pages.currentPage)
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
   
-    const currentPage = useSelector((state) => state.pages.currentPage)
-    console.log("Pagina actual:", currentPage);
+    if (token && user) {
+      try {
+        const parsedUser = JSON.parse(user);
+        dispatch(doLoginAction({ token, user: parsedUser }));
+      } catch (error) {
+        console.error("Error al parsear user desde localStorage:", error);
+        localStorage.removeItem("user"); // limpia si está corrupto
+      }
+    }
+  }, []);
   return (
     <div>
         <HeaderComponent/>
@@ -25,6 +40,7 @@ const MainPage = () => {
       {currentPage === "menu" && <ProductListComponent/>}
       {currentPage === "user-detail" && <UserDetail/>}
       {currentPage === "contact" && <ContactComponent/>}
+      {currentPage === "create-product" && <CreateProduct/>}
       <FooterComponent/>
     </div>
   )
