@@ -17,8 +17,7 @@ const LoginPage = () => {
 
     const doLogin = async () => {
             const userInfo = await doLoginFetch(email, password);
-            console.log("userInfo", userInfo);
-        
+         
             //Eliminar contraseña del objeto user
             delete userInfo.user?.password;
         
@@ -44,7 +43,7 @@ const LoginPage = () => {
     
         try {
             const userInfo = await registerUser(data);
-            console.log("userInfo", userInfo);
+          
     
             delete userInfo.user?.password;
     
@@ -81,7 +80,7 @@ const LoginPage = () => {
             {flagLogin ? (
                     <div>
                         <h1 className='title-page'>Iniciar Sesión</h1>
-                        <div>
+                        <div className="login-container">
                             <div>
                                 <span>Email: </span>
                                 <input
@@ -100,20 +99,19 @@ const LoginPage = () => {
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
                             </div>
-                            <div>
-                                <button className='yellow-button' onClick={doLogin}>Iniciar Sesión</button>
-                            </div>
-                        </div>
-                        <div>
-                            <button onClick={() => setFlagLogin(false)}>
+                            <div className="buttons login">
+                                <button className='yellowb button' onClick={doLogin}>Iniciar Sesión</button>
+                            <button className="register-button" onClick={() => setFlagLogin(false)}>
                                 Quiero registrarme
                             </button>
+                            </div>
                         </div>
+                       
                     </div>
                 ) : (
-                    <div>
+                    <div className="pages-container">
                         <h1 className='title-page'>Registro</h1>
-                        <div className="form">
+                        <div className="login-container register">
                             <div>
                                 <span>Imagen</span>
                                {user?.profileImage && (
@@ -223,12 +221,12 @@ const LoginPage = () => {
                                     required
                                 />
                             </div>
-                            <div>
-                                <button className='yellow-button' onClick={doRegister}>Registrarme</button>
+                            <div className="buttons register">
+                                <button className='yellowb button' onClick={doRegister}>Registrarme</button>
                             </div>
                         </div>
                         <div>
-                            <button button className='grey-button' onClick={() => setFlagLogin(true)}>Volver</button>
+                            <button button className='greyb button' onClick={() => setFlagLogin(true)}>Volver</button>
                         </div>
                     </div>
                 )}

@@ -1,4 +1,5 @@
 export const LOGIN = 'LOGIN'
+export const LOGOUT = 'LOGOUT'
 
 
 export const doLoginAction = ({user,token}) => {
@@ -8,3 +9,6 @@ export const doLoginAction = ({user,token}) => {
     }
 }
 
+export const doLogoutAction = () => ({
+    type: 'LOGOUT'
+})

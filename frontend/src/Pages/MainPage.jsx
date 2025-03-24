@@ -11,25 +11,36 @@ import CartComponent from '../Components/cart/CartComponent';
 import ContactComponent from '../Components/contact/ContactComponent';
 import { doLoginAction } from '../Components/login/LoginAction';
 import CreateProduct from '../Components/product/CreateProduct';
+import { useState } from 'react';
 
 const MainPage = () => {
   const dispatch = useDispatch()  
   const currentPage = useSelector((state) => state.pages.currentPage)
+  const user = useSelector(state => state.loginReducer.user);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const user = localStorage.getItem("user");
-  
-    if (token && user) {
+    const storedUser = localStorage.getItem("user");
+    if (!user && token && storedUser) {
       try {
-        const parsedUser = JSON.parse(user);
+        const parsedUser = JSON.parse(storedUser);
         dispatch(doLoginAction({ token, user: parsedUser }));
       } catch (error) {
         console.error("Error al parsear user desde localStorage:", error);
-        localStorage.removeItem("user"); // limpia si está corrupto
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
       }
     }
-  }, []);
+  }, [dispatch, user]);
+
+  useEffect(() => {
+    if (user?.role === "admin") {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
+    }
+  }, [user]);
   return (
     <div>
         <HeaderComponent/>

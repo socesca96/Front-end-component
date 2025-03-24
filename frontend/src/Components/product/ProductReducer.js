@@ -6,8 +6,7 @@ const initialState = {
 }
 
 const productReducer = (state = initialState, action) => {
-    console.log("Estado actual de Redux antes de acción:", state);
-    console.log("Acción recibida en el reducer:", action);
+    
 
     if(action.type === LOAD_PRODUCTS) {
         return {

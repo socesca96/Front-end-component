@@ -39,7 +39,6 @@ const handlerMenu = () => {
                     <div className='icon-menu' onClick={handlerMenu}>
                         <img src={menu} alt="Icono menu forma de hamburguesa" />
                     </div>
-                    {}
                     <div className='logo' onClick={handlerGoToHome}>
                         <img src={logo1} alt="Logo de la tienda"/>
                     </div>

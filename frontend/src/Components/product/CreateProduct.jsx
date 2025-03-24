@@ -23,7 +23,7 @@ const CreateProduct = ({ onClose }) => {
     })
   }
 
-  const handleCreate = async () => {
+  const handlerCreate = async () => {
     try {
       const token = localStorage.getItem('token')
       const newProduct = await createProductFetch(formData, token)
@@ -70,8 +70,8 @@ const CreateProduct = ({ onClose }) => {
         </div>
       </div>
       <div className="buttons">
-        <button className="yellow-button" onClick={handleCreate}>Crear</button>
-        <button className="red-button" onClick={onClose}>Cancelar</button>
+        <button className="yellowb button" onClick={handlerCreate}>Crear</button>
+        <button className="redb button" onClick={onClose}>Cancelar</button>
       </div>
     </div>
   )

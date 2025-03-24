@@ -24,7 +24,7 @@ export const getAllProductsFetch = async () => {
     })
 
     const result = await res.json()
-    console.log("Respuesta de la API:", result);
+
     return Array.isArray(result.data) ? result.data : []
 }
 
@@ -64,7 +64,16 @@ export const updateProductFetch = async (productId, updatedProduct) => {
             updatedProduct
         )
     })
+    const contentType = res.headers.get("Content-Type");
 
+    // Si el backend devolvió texto plano como "Token expired"
+    if (!res.ok) {
+        const errorText = contentType?.includes("application/json")
+            ? await res.json()
+            : await res.text();
+
+        throw new Error(errorText?.message || errorText || "Error actualizando producto");
+    }
     const result = await res.json()
     return result.product
 }

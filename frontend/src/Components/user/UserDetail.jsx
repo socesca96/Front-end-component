@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import UpdateUser from './UpdateUser'
 import { useDispatch, useSelector } from 'react-redux'
 import { goToPageAction } from '../pages/PagesAction'
+import { doLogoutAction } from '../login/LoginAction'
 
 const UserDetail = (props) => {
   const {
@@ -9,9 +10,8 @@ const UserDetail = (props) => {
   } = props
 
   const user = useSelector((state) => state.loginReducer.user);
-  console.log("👤 Usuario en UserDetail:", user);
 
-  const [isUpdate, setIsUpdate] = useState(false) 
+  const [isUpdate, setIsUpdate] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -19,12 +19,19 @@ const UserDetail = (props) => {
     dispatch(goToPageAction('home'))
     onClose()
   }
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    dispatch(doLogoutAction());
+    dispatch(goToPageAction("login")); // redirigir al login
+  };
 
   if (!user) {
     return (
       <div>
-      <p>Cargando usuario...</p>
-    </div>
+        <p>Cargando usuario...</p>
+      </div>
     )
   }
 
@@ -32,36 +39,52 @@ const UserDetail = (props) => {
     <div className='pages-container'>
       <h1 className='title-page'>Mi perfil</h1>
       {isUpdate ? (
-        <UpdateUser user={user} onClose={() => setIsUpdate(false)}/>
+        <UpdateUser user={user} onClose={() => setIsUpdate(false)} />
       ) : (
         <div className='user-detail'>
+           <button className="register-button" onClick={handleLogout}>Cerrar sesión</button>
           <div className='image-profile'>
-          <span>Imagen</span>
-          <img src={`http://localhost:3000/uploads/${user.profileImage}`} alt="Foto de perfil" />
-          <input type="file" name='profileImage' readOnly/>
+            <span>Imagen</span>
+            <img src={`http://localhost:3000/uploads/${user.profileImage}`} alt="Foto de perfil" />
+            <input type="file" name='profileImage' readOnly />
           </div>
-          <div className='info'>
-          <span>Nombre</span>
-          <input type="text" value={user.name} readOnly/>
-          <span>Apellidos</span>
-          <input type="text" value={user.lastName} readOnly/>
-          <span>Dirección</span>
-          <input type="text" value={user.address} readOnly/>
-          <span>Código Postal</span>
-          <input type="text" value={user.postalCode} readOnly/>
-          <span>Localidad</span>
-          <input type="text" value={user.town} readOnly/>
-          <span>Provincia</span>
-          <input type="text" value={user.province} readOnly/>
-          <span>Email</span>
-          <input type="text" value={user.email} readOnly/>
-          <span>Contraseña</span>
-          <input type="password" value={user.password} readOnly/>
+          <div>
+            <div className='info-user'>
+              <span className='title-user'>Nombre: </span>
+              <span>{user.name}</span>
+            </div>
+            <div className='info-user'>
+              <span className='title-user'>Apellidos: </span>
+              <span>{user.lastName}</span>
+            </div>
+            <div className='info-user'>
+              <span className='title-user'>Dirección: </span>
+              <span>{user.address}</span>
+            </div>
+            <div className='info-user'>
+              <span className='title-user'>Código Postal: </span>
+              <span>{user.postalCode}</span>
+            </div>
+            <div className='info-user'>
+              <span className='title-user'>Localidad: </span>
+              <span>{user.town}</span>
+            </div>
+            <div className='info-user'>
+              <span className='title-user'>Provincia: </span>
+              <span>{user.province}</span>
+            </div>
+            <div className='info-user'>
+              <span className='title-user'>Email: </span>
+              <span>{user.email}</span>
+            </div>
+            <div className='info-user'>
+              <span className='title-user'>Contraseña: </span>
+              <input type="password" value={user.password} readOnly />
+            </div>
           </div>
           <div className='buttons'>
-
-          <button className='yellow-button' onClick={() => setIsUpdate(true)}>Editar</button>
-          <button className='grey-button' onClick={() => handlerCancel()}>Volver</button>
+            <button className='yellowb button' onClick={() => setIsUpdate(true)}>Editar</button>
+            <button className='greyb button' onClick={() => handlerCancel()}>Volver</button>
           </div>
         </div>
       )}
