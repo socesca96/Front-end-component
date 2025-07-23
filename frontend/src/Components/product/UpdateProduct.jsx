@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateProductAction } from './ProductAction'
-import { updateProductFetch } from '../../Core/Services/productFetch'
+import { loadProductsAction, updateProductAction } from './ProductAction'
+import { getAllProductsFetch, updateProductFetch } from '../../Core/Services/productFetch'
 import { goToPageAction } from '../pages/PagesAction'
 
 const UpdateProduct = (props) => {
@@ -9,7 +9,7 @@ const UpdateProduct = (props) => {
     const [formData, setFormData] = useState(product)
     const dispatch = useDispatch()
 
-    // 🔐 Traer el usuario desde Redux
+    // Traer el usuario desde Redux
     const user = useSelector((state) => state.loginReducer.user)
     const isAdmin = user?.role === 'admin'
 
@@ -22,9 +22,14 @@ const UpdateProduct = (props) => {
 
     const handlerUpdate = async () => {
         try {
+            console.log("Formulario que se enviará al backend:", formData);
             const updated = await updateProductFetch(formData._id, formData)
             dispatch(updateProductAction(updated))
-            onClose()
+
+            const updatedList = await getAllProductsFetch();
+            dispatch(loadProductsAction(updatedList));
+            
+            onClose(updated)
         } catch (error) {
             console.error("Error actualizando producto:", error.message);
             alert(error.message);
@@ -78,7 +83,7 @@ const UpdateProduct = (props) => {
             </div>
             <div className='buttons'>
                 <button className='yellowb button' onClick={handlerUpdate}>Actualizar</button>
-                <button className='redb button' onClick={onClose}>Cancelar</button>
+                <button className='redb button' onClick={() => onClose()}>Cancelar</button>
             </div>
         </div>
     )

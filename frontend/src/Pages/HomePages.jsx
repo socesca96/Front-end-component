@@ -11,7 +11,6 @@ const HomePages = () => {
         </div>
         <div className='second-home-container'>
           <div className='box-wrapper'>
-
           <div className='box'>
             <p>Ofertas para profesionales</p>
           </div>

@@ -40,13 +40,20 @@ export const getProductByIdFetch = async (productId) => {
 }
 
 export const deleteProductFetch = async (productId) => {
+    const token = localStorage.getItem("token");
+    
     const res = await fetch(`http://localhost:3000/products/${productId}`, {
         method: 'DELETE',
         headers: {
             'content-type': 'application/json',
             'auth-token': token,
         }
-    })
+    });
+
+    if(!res.ok) {
+        const errorText = await res.text();
+        throw new Error(errorText || "Error eliminando producto");
+    }
 
     const result = await res.json()
     return result.message
@@ -54,10 +61,11 @@ export const deleteProductFetch = async (productId) => {
 
 export const updateProductFetch = async (productId, updatedProduct) => {
     const token = localStorage.getItem('token')
+    
     const res = await fetch(`http://localhost:3000/products/${productId}`, {
         method: 'PUT',
         headers: {
-            'content-type': 'application/json',
+            'Content-Type': 'application/json',
             'auth-token': token,
         },
         body: JSON.stringify(

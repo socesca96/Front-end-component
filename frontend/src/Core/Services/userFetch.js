@@ -1,7 +1,7 @@
 //AQuí voy a necesitar el token
-export const updateUserFetch = async (userId, formData, token) => {
+export const updateUserFetch = async (formData, token) => {
 
-    const res = await fetch(`http://localhost:3000/user/${userId}`, {
+    const res = await fetch(`http://localhost:3000/user/user`, {
         method: "PUT",
         headers: {
             "auth-token": token,

@@ -42,7 +42,7 @@ const handlerMenu = () => {
                     <div className='logo' onClick={handlerGoToHome}>
                         <img src={logo1} alt="Logo de la tienda"/>
                     </div>
-                    <nav className='small-menu'>
+                    <div className='small-menu'>
                         <div className='icon-menu' onClick={handlerSearch}>
                         <img src={search} alt="Icono lupa" />
                         </div>
@@ -52,7 +52,7 @@ const handlerMenu = () => {
                         <div className='icon-menu' onClick={handlerGoToCart}>
                         <img src={cart} alt="Icono carrito" />
                         </div>
-                    </nav>
+                    </div>
                     </div>
                     {/* Las categorías solo las mostraré en pantallas grandes */}
                     <div className='second-container'>

@@ -30,7 +30,17 @@ const CreateProduct = ({ onClose }) => {
 
       dispatch(createProductAction(newProduct))
       alert('Producto creado correctamente')
-      if (onClose) onClose()
+
+      setFormData({
+        name: '',
+        description: '',
+        code:'',
+        size: '',
+        colour: '',
+        category: '',
+        price:'',
+      })
+
     } catch (error) {
       console.error('Error al crear producto:', error)
     }
@@ -39,39 +49,39 @@ const CreateProduct = ({ onClose }) => {
   return (
     <div className='pages-container'>
       <h1 className='title-page'>Crear Producto</h1>
-      <div className='info created'>
-        <div>
+      <form className='form-product-container'>
+        <div className='form-group'>
           <span>Nombre: </span>
           <input type="text" name="name" value={formData.name} onChange={handleChange} />
         </div>
-        <div>
+        <div className='form-group'>
           <span>Descripción: </span>
           <input type="text" name="description" value={formData.description} onChange={handleChange} />
         </div>
-        <div>
+        <div className='form-group'>
           <span>Código: </span>
           <input type="text" name="code" value={formData.code} onChange={handleChange} />
         </div>
-        <div>
+        <div className='form-group'>
           <span>Tamaño: </span>
           <input type="text" name="size" value={formData.size} onChange={handleChange} />
         </div>
-        <div>
+        <div className='form-group'>
           <span>Color: </span>
           <input type="text" name="colour" value={formData.colour} onChange={handleChange} />
         </div>
-        <div>
+        <div className='form-group'>
           <span>Categoría: </span>
           <input type="text" name="category" value={formData.category} onChange={handleChange} />
         </div>
-        <div>
+        <div className='form-group'>
           <span>Precio: </span>
           <input type="number" name="price" value={formData.price} onChange={handleChange} />
         </div>
-      </div>
+      </form>
       <div className="buttons">
         <button className="yellowb button" onClick={handlerCreate}>Crear</button>
-        <button className="redb button" onClick={onClose}>Cancelar</button>
+        <button className="redb button" type='button' onClick={onClose}>Cancelar</button>
       </div>
     </div>
   )

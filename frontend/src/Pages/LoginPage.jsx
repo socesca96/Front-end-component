@@ -16,20 +16,33 @@ const LoginPage = () => {
     const dispatch = useDispatch();
 
     const doLogin = async () => {
-            const userInfo = await doLoginFetch(email, password);
-         
-            //Eliminar contraseña del objeto user
-            delete userInfo.user?.password;
-        
-            // Guardar en localStorage
-            localStorage.setItem("token", userInfo.token);
-            localStorage.setItem("user", JSON.stringify(userInfo.user));
-        
-            dispatch(doLoginAction({
-                user: userInfo,
-                token: userInfo.token,
-              }));
-            dispatch(goToPageAction("user-detail"));
+        try {
+                const userInfo = await doLoginFetch(email, password);
+    
+                if (!userInfo || !userInfo.token || !userInfo.user) {
+                    alert("Error al iniciar sesión");
+                    return;
+                }
+             
+                //Eliminar contraseña del objeto user
+                delete userInfo.user.password;
+            
+                // Guardar en localStorage
+                localStorage.setItem("token", userInfo.token);
+                localStorage.setItem("user", JSON.stringify(userInfo.user));
+    
+                //Guardar en Redux
+                dispatch(doLoginAction({
+                    user: userInfo.user,
+                    token: userInfo.token,
+                  }));
+    
+                //Navegar a otra visita
+                dispatch(goToPageAction("user-detail"));
+            } catch (error) {
+                console.error("Error en login:", error);
+                alert("Error en login")
+            }
     };
     const doRegister = async () => {
         const data = new FormData();
@@ -111,8 +124,9 @@ const LoginPage = () => {
                 ) : (
                     <div className="pages-container">
                         <h1 className='title-page'>Registro</h1>
-                        <div className="login-container register">
-                            <div>
+                        <div className="form-updated-user">
+                            <div className="info-user">
+                                <div className="image-profile">
                                 <span>Imagen</span>
                                {user?.profileImage && (
                                 <img
@@ -121,9 +135,10 @@ const LoginPage = () => {
                                 />
                                )}
                                 <input type="file" name="profileImage" onChange={handlerFileChange} />
+                                </div>
                             </div>
-                            <div>
-                                <span>Nombre </span>
+                            <div className="info-user">
+                                <span className="title-user">Nombre </span>
                                 <input
                                     type="text"
                                     name="name"
@@ -135,7 +150,7 @@ const LoginPage = () => {
                                     required
                                 />
                             </div>
-                            <div>
+                            <div className="info-user">
                                 <span>Apellidos </span>
                                 <input
                                     type="text"
@@ -147,7 +162,7 @@ const LoginPage = () => {
                                     }
                                 />
                             </div>
-                            <div>
+                            <div className="info-user">
                                 <span>Dirección </span>
                                 <input
                                     type="text"
@@ -159,7 +174,7 @@ const LoginPage = () => {
                                     }
                                 />
                             </div>
-                            <div>
+                            <div className="info-user">
                                 <span>Código Postal</span>
                                 <input
                                     type="text"
@@ -171,7 +186,7 @@ const LoginPage = () => {
                                     }
                                 />
                             </div>
-                            <div>
+                            <div className="info-user">
                                 <span>Localidad </span>
                                 <input
                                     type="text"
@@ -183,7 +198,7 @@ const LoginPage = () => {
                                     }
                                 />
                             </div>
-                            <div>
+                            <div className="info-user">
                                 <span>Provincia</span>
                                 <input
                                     type="text"
@@ -195,7 +210,7 @@ const LoginPage = () => {
                                     }
                                 />
                             </div>
-                            <div>
+                            <div className="info-user">
                                 <span>Email </span>
                                 <input
                                     type="email"
@@ -208,7 +223,7 @@ const LoginPage = () => {
                                     required
                                 />
                             </div>
-                            <div>
+                            <div className="info-user">
                                 <span>Contraseña </span>
                                 <input
                                     type="password"
@@ -225,7 +240,7 @@ const LoginPage = () => {
                                 <button className='yellowb button' onClick={doRegister}>Registrarme</button>
                             </div>
                         </div>
-                        <div>
+                        <div className="buttons">
                             <button button className='greyb button' onClick={() => setFlagLogin(true)}>Volver</button>
                         </div>
                     </div>

@@ -42,11 +42,12 @@ const UserDetail = (props) => {
         <UpdateUser user={user} onClose={() => setIsUpdate(false)} />
       ) : (
         <div className='user-detail'>
-           <button className="register-button" onClick={handleLogout}>Cerrar sesión</button>
           <div className='image-profile'>
-            <span>Imagen</span>
-            <img src={`http://localhost:3000/uploads/${user.profileImage}`} alt="Foto de perfil" />
-            <input type="file" name='profileImage' readOnly />
+            {user.profileImage ? (
+              <img src={`http://localhost:3000/uploads/${user.profileImage}`} alt="Foto de perfil" />
+            ) : (
+              <p>No hay imagen de perfil</p>
+            )}
           </div>
           <div>
             <div className='info-user'>
@@ -79,12 +80,12 @@ const UserDetail = (props) => {
             </div>
             <div className='info-user'>
               <span className='title-user'>Contraseña: </span>
-              <input type="password" value={user.password} readOnly />
+              <span>************</span>
             </div>
           </div>
           <div className='buttons'>
             <button className='yellowb button' onClick={() => setIsUpdate(true)}>Editar</button>
-            <button className='greyb button' onClick={() => handlerCancel()}>Volver</button>
+            <button className='greyb button' onClick={handleLogout}>Cerrar Sesión</button>
           </div>
         </div>
       )}

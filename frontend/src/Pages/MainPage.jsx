@@ -12,6 +12,7 @@ import ContactComponent from '../Components/contact/ContactComponent';
 import { doLoginAction } from '../Components/login/LoginAction';
 import CreateProduct from '../Components/product/CreateProduct';
 import { useState } from 'react';
+import { goToPageAction } from '../Components/pages/PagesAction';
 
 const MainPage = () => {
   const dispatch = useDispatch()  
@@ -51,7 +52,7 @@ const MainPage = () => {
       {currentPage === "menu" && <ProductListComponent/>}
       {currentPage === "user-detail" && <UserDetail/>}
       {currentPage === "contact" && <ContactComponent/>}
-      {currentPage === "create-product" && <CreateProduct/>}
+      {currentPage === "create-product" && (<CreateProduct onClose={() => dispatch(goToPageAction("menu"))}/> )}
       <FooterComponent/>
     </div>
   )

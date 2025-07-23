@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT } from "./LoginAction"
+import { LOAD_INFO, LOGIN, LOGOUT } from "./LoginAction"
 
 
 const initialState = {
@@ -21,8 +21,13 @@ const loginReducer = (state = initialState, action) => {
             token: undefined,
             isOnline: false,
         };
+    } else if (action.type === LOAD_INFO) {
+        return {
+            ...state,
+            user: action.payload
+        }
     } else {
-        return state;
+        return state
     }
 };
 
