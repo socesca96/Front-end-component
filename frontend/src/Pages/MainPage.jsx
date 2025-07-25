@@ -43,8 +43,8 @@ const MainPage = () => {
     }
   }, [user]);
 
-  //Para guardar la pagina y que no se nos vuelva al login 
-  useEffect(()=> {
+   //Para guardar la pagina y que no se nos vuelva al login 
+   useEffect(()=> {
     const savedPage = localStorage.getItem("currentPage");
   if(savedPage) {
     dispatch(goToPageAction(savedPage))
@@ -56,7 +56,6 @@ const MainPage = () => {
       dispatch(goToPageAction("user-detail"));
     }
   }, [user, currentPage, dispatch])
-  
   return (
     <div>
         <HeaderComponent/>
