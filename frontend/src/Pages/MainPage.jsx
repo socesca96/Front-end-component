@@ -42,6 +42,21 @@ const MainPage = () => {
       setIsAdmin(false);
     }
   }, [user]);
+
+  //Para guardar la pagina y que no se nos vuelva al login 
+  useEffect(()=> {
+    const savedPage = localStorage.getItem("currentPage");
+  if(savedPage) {
+    dispatch(goToPageAction(savedPage))
+  }
+  }, [dispatch])
+
+  useEffect(() => {
+    if (user && currentPage === "login") {
+      dispatch(goToPageAction("user-detail"));
+    }
+  }, [user, currentPage, dispatch])
+  
   return (
     <div>
         <HeaderComponent/>
